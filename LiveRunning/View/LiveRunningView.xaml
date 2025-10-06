@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             xmlns:viewModels="clr-namespace:LiveRunning.ViewModels"
+             x:DataType="viewModels:LiveRunningViewModel"
+             x:Class="LiveRunning.View.LiveRunningView">
+    <ContentPage.Content>
+       <Grid Padding="10,15,10,50"
+              RowDefinitions="*" BackgroundColor="{x:StaticResource Background}">
+
+            <VerticalStackLayout Spacing="10" Grid.Row="0"
+                                 IsVisible="{Binding LiveRunning.IsStartLiveRunningButtonVisible}">
+                <VerticalStackLayout Spacing="5" Grid.Row="0">
+                    <Label Style="{x:StaticResource Headline}" FontSize="25" HorizontalOptions="Center" Text="Run Stronger, Finish Stronger">
+                    </Label>
+                    <Border HorizontalOptions="Center"
+                            Stroke="White"
+                            StrokeThickness="4"
+                            HeightRequest="200"
+                            WidthRequest="200"
+                            StrokeShape="RoundRectangle 100"
+                            BackgroundColor="{x:StaticResource Primary}">
+                        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                            <Label Style="{x:StaticResource SubHeadline}" TextColor="White" Text="START" HorizontalTextAlignment="Center"
+                            />
+                            <Label Style="{x:StaticResource SubHeadline}" TextColor="White" Text="WORKOUT" HorizontalTextAlignment="Center"
+                            />
+                        </VerticalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding StartLiveRunningCommand}" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Grid.Row="0" />
+            <!--Running INfo-->
+            <Grid RowSpacing="10" RowDefinitions="Auto,Auto,*" Grid.Row="0" IsVisible="{Binding LiveRunning.IsLiveRunningStarted}">
+
+                <Grid RowDefinitions="Auto" ColumnDefinitions="2.5*,5*,2.5*">
+                    <Image Grid.Row="0" Grid.Column="0" VerticalOptions="Start"
+                        Margin="0,10,0,0"
+                         Source="{x:StaticResource stop}"
+                           HeightRequest="50" >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding StopWorkOutCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <VerticalStackLayout VerticalOptions="Center" Grid.Column="1" Spacing="0" Grid.Row="0">
+                        <Border Stroke="Transparent" BackgroundColor="White" StrokeShape="RoundRectangle 10" Padding="0">
+                            <Label Text="{Binding LiveRunning.DisplayTimer}"
+                                   Margin="0,3,0,0"
+                                   Style="{x:StaticResource ClockHeader}"
+                                   VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                        </Border>
+
+
+                        <Label Text="Running In Progress" Margin="0,5,0,5"
+                               HorizontalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding LiveRunning.IsWorkoutPaused}">
+                                    <Setter Property="Text" Value="Running Paused"></Setter>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding LiveRunning.IsWorkoutResumed}">
+                                    <Setter Property="Text" Value="Running In Progress"></Setter>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </VerticalStackLayout>
+
+                    <Image Margin="0,10,0,0" Grid.Row="0" Grid.Column="2" VerticalOptions="Start" Source="{x:StaticResource pause}" HeightRequest="50">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding LiveRunning.IsWorkoutResumed}"
+                                         Value="True">
+                                <Setter Property="Source" Value="{x:StaticResource pause}"></Setter>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Image" Binding="{Binding LiveRunning.IsWorkoutPaused}"
+                                         Value="True">
+                                <Setter Property="Source" Value="{x:StaticResource play}"></Setter>
+                            </DataTrigger>
+                        </Image.Triggers>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PauseRunningCommand}"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+                
+                
+                <Grid Margin="0,0,0,5" ColumnSpacing="10" Grid.Row="1" RowDefinitions="Auto" ColumnDefinitions="5*,5*">
+                    <Border Padding="10" Stroke="Transparent" BackgroundColor="White"  Grid.Row="0" Grid.Column="0" StrokeShape="RoundRectangle 10" >
+                        <VerticalStackLayout >
+                            <Label  Style="{x:StaticResource BoldSubHeadLine}"
+                                   HorizontalTextAlignment="Center"
+                                   Text="DISTANCE" />
+                            <Label  
+                                   HorizontalTextAlignment="Center"
+                                   Text="{Binding LiveRunning.TotalMilesStr}" />
+
+                            <Label Text="miles"
+                                   HorizontalTextAlignment="Center"
+                                   />
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    <Border Padding="10" Stroke="Transparent"  Grid.Row="0" Grid.Column="1" BackgroundColor="White" StrokeShape="RoundRectangle 10" >
+                        <VerticalStackLayout  >
+                            <Label  Style="{x:StaticResource BoldSubHeadLine}"
+                                    HorizontalTextAlignment="Center"
+                                    Text="CALORIES" />
+                            <Label  
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding LiveRunning.CaloriesBurnedStr}"  />
+
+                            <Label Text="burned"
+                                   HorizontalTextAlignment="Center"
+                                  />
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                  
+                </Grid>
+
+                <Border Stroke="White" StrokeShape="RoundRectangle 5" Grid.Row="2" Padding="0" StrokeThickness="3" >
+                    <maps:Map x:Name="map"  IsShowingUser="True" />
+                </Border>
+            </Grid>
+
+            <!--Waiting Panel-->
+            <Grid 
+                  IsVisible="{Binding LiveRunning.IsWaitingPanelVisible}"
+                  Grid.Row="0">
+
+                <VerticalStackLayout Margin="0,150,0,0" HorizontalOptions="Center">
+                    <Label Text="{Binding LiveRunning.WaitingTimer}"
+                           FontSize="100"
+                           HorizontalOptions="Center"
+                           Style="{x:StaticResource SubHeadline}"
+                           FontAttributes="Bold" />
+                    <Label Text="TAP TO START IMMEDIATELY" />
+                </VerticalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding StartLiveRunningImmediatelyCommand}" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

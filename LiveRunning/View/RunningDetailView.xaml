@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:LiveRunning.ViewModels"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             x:DataType="viewModels:RunningDetailViewModel"
+             Title="Running Detail"
+             x:Class="LiveRunning.View.RunningDetailView">
+    <ContentPage.Content>
+        <Grid RowSpacing="10" Padding="10,15,10,0"
+              RowDefinitions="Auto,*" BackgroundColor="{x:StaticResource Background}">
+
+            <Grid Grid.Row="0" ColumnSpacing="10" RowDefinitions="Auto" ColumnDefinitions="3.33*,3.33*,3.33*">
+                <Border Padding="10" BackgroundColor="White" Stroke="Transparent" StrokeShape="RoundRectangle 5" Grid.Column="0">
+                    <VerticalStackLayout>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{x:StaticResource SubHeadline}"
+                            Text="{Binding LiveRunning.DisplayTimer}" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{x:StaticResource SubHeadline}"
+                            Text="Duration" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border Padding="10" BackgroundColor="White" Stroke="Transparent" StrokeShape="RoundRectangle 5" Grid.Column="1">
+                    <VerticalStackLayout>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{x:StaticResource SubHeadline}"
+                            Text="{Binding LiveRunning.TotalMilesStr}" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{x:StaticResource SubHeadline}"
+                            Text="Miles" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border Padding="10" BackgroundColor="White" Stroke="Transparent" StrokeShape="RoundRectangle 5" Grid.Column="2">
+                    <VerticalStackLayout>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{x:StaticResource SubHeadline}"
+                            Text="{Binding LiveRunning.TotalMilesStr}" />
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            Style="{x:StaticResource SubHeadline}"
+                            Text="Min/Mi" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+            
+            <Border Stroke="White" StrokeThickness="3" StrokeShape="RoundRectangle 5" Grid.Row="1">
+                <maps:Map
+                    x:Name="map"
+                    IsShowingUser="False" />
+            </Border>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
